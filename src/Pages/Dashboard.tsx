@@ -128,9 +128,9 @@ function DashboardPage() {
                     <td className="p-2 border relative">
                       <img src={user.image} alt="User" className="w-10 h-10 mx-auto" />
                       {user.gender === "male" ? (
-                        <span className="absolute top-0 right-0 bg-blue-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs m-1">♂</span>
+                        <span className="absolute top-0 right-0 bg-blue-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs m-1"><span style={{ transform: 'translateY(-1px)' }}>♂</span></span>
                       ) : (
-                        <span className="absolute top-0 right-0 bg-pink-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs m-1">♀</span>
+                        <span className="absolute top-0 right-0 bg-pink-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs m-1"><span style={{ transform: 'translateY(-1px)' }}>♀</span></span>
                       )}
                     </td>
                     <td className="p-2 border">{user.firstName} {user.lastName}</td>
