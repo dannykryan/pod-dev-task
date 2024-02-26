@@ -30,18 +30,19 @@ function DashboardPage() {
         return response.json();
       })
       .then(data => {
-        // Extracting and mapping desired properties from each user
-        const updatedUsers = data.users.map((user: User) => {
-          return {
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            age: user.age,
-            image: user.image,
-            gender: user.gender
-          };
-        });
+        // Retrieve deleted user IDs from localStorage
+      const deletedUserIds = JSON.parse(localStorage.getItem('deletedUserIds') || '[]');
+
+      // Filter out users with IDs in deletedUserIds
+      const updatedUsers = data.users.filter((user: User) => !deletedUserIds.includes(user.id)).map((user: User) => ({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          age: user.age,
+          image: user.image,
+          gender: user.gender
+        }));
 
         setUsers(updatedUsers);
         setLoading(false);

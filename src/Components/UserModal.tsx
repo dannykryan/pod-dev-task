@@ -3,19 +3,19 @@ import { Link } from 'react-router-dom';
 import ConfirmationModal from './ConfirmationModal';
 
 type User = {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    image: string;
-    age: number;
-    gender: string;
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  image: string;
+  age: number;
+  gender: string;
 };
 
 type UserModalProps = {
-    user: User | null;
-    onClose: () => void;
-    isOpen: boolean;
+  user: User | null;
+  onClose: () => void;
+  isOpen: boolean;
 };
 
 const playDeselectSound = () => {
@@ -27,49 +27,42 @@ const playDeselectSound = () => {
 const UserModal: React.FC<UserModalProps> = ({ user, onClose, isOpen }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
-  const modalOverlayClass = isOpen ? "modal-overlay" : "hidden";
-  const modalClass = isOpen ? "modal dark:bg-slate-800" : "hidden";
-
-  if (!user || !isOpen) return null;
-
-  // Function to handle user deletion
-  function handleDeleteUser() {
+  // Function to handle user deletion after confirmation
+  const confirmedDeleteUser = () => {
     if (user) {
       const deleteUserUrl = `https://dummyjson.com/users/${user.id}`;
-
       fetch(deleteUserUrl, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
-        .then(response => {
-          if (response.ok) {
-            setIsConfirmationModalOpen(false);
-            onClose(); // Close the UserModal
-            playDeselectSound();
-          } else {
-            throw new Error('Failed to delete user');
-          }
-        })
-        .catch(error => {
-          console.error('Failed to delete user:', error);
-        });
+      .then(response => {
+        if (response.ok) {
+          // Logic after successful deletion
+          const deletedUserIds = JSON.parse(localStorage.getItem('deletedUserIds') || '[]');
+          deletedUserIds.push(user.id);
+          localStorage.setItem('deletedUserIds', JSON.stringify(deletedUserIds));
+          onClose(); // Close the UserModal
+          playDeselectSound();
+          window.location.reload(); // Optionally reload the page or update state
+        } else {
+          throw new Error('Failed to delete user');
+        }
+      })
+      .catch(error => {
+        console.error('Failed to delete user:', error);
+      });
     }
-  }
-
-  const handleCloseConfirmationModal = () => {
-    setIsConfirmationModalOpen(false);
-    handleDeleteUser();
   };
 
   return (
     <>
-      <div className={modalOverlayClass}>
-        <div className={modalClass}>
+      <div className={isOpen ? "modal-overlay" : "hidden"}>
+        <div className={isOpen ? "modal dark:bg-slate-800" : "hidden"}>
           <div className="relative">
-          <div className="flex items-center justify-center">
-          <div className={`w-40 h-40 overflow-hidden ${user.gender === 'male' ? 'bg-blue-300' : 'bg-pink-300'}`}>
-            <img className="w-full h-full object-cover" src={user.image} alt="User" />
-          </div>
-        </div>
+            <div className="flex items-center justify-center">
+              <div className={`w-40 h-40 overflow-hidden ${user?.gender === 'male' ? 'bg-blue-300' : 'bg-pink-300'}`}>
+                <img className="w-full h-full object-cover" src={user?.image} alt="User" />
+              </div>
+            </div>
             <div 
               className="absolute top-1 right-1 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md cursor-pointer dark:bg-gray-700 hover:opacity-50" 
               onClick={() => {
@@ -82,17 +75,19 @@ const UserModal: React.FC<UserModalProps> = ({ user, onClose, isOpen }) => {
           </div>
           <div className="px-6 py-4">
             <div className="flex items-center justify-center mb-2">
-              <p className="font-bold text-xl">{user.firstName} {user.lastName}</p>
-              <span className={`bg-${user.gender === "male" ? 'blue' : 'pink'}-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs ml-2`}>{user.gender === "male" ? <span style={{ transform: 'translateY(-1px)' }}>♂</span> : <span style={{ transform: 'translateY(-1px)' }}>♀</span>}</span>
+              <p className="font-bold text-xl">{user?.firstName} {user?.lastName}</p>
+              <span className={`bg-${user?.gender === "male" ? 'blue' : 'pink'}-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs ml-2`}>
+                {user?.gender === "male" ? <span style={{ transform: 'translateY(-1px)' }}>♂</span> : <span style={{ transform: 'translateY(-1px)' }}>♀</span>}
+              </span>
             </div>
-            <a className="dark:text-purple-500" href={`mailto:${user.email}`}>{user.email}</a>
+            <a className="dark:text-purple-500" href={`mailto:${user?.email}`}>{user?.email}</a>
           </div>
-          <Link to={`/users/${user.id}/edit`} className="btn py-2 px-4">
+          <Link to={`/users/${user?.id}/edit`} className="btn py-2 px-4">
             Update User
           </Link>
           <button 
             className="btn btn-cancel py-2 px-4"
-            onClick={handleDeleteUser}
+            onClick={() => setIsConfirmationModalOpen(true)}
           >
             Delete User
           </button>
@@ -100,7 +95,9 @@ const UserModal: React.FC<UserModalProps> = ({ user, onClose, isOpen }) => {
       </div>
       <ConfirmationModal 
         isOpen={isConfirmationModalOpen} 
-        onClose={handleCloseConfirmationModal} 
+        onClose={() => setIsConfirmationModalOpen(false)} // Close modal without deleting
+        onConfirm={confirmedDeleteUser} // Call confirmedDeleteUser on confirmation
+        message="Are you sure you want to delete this user?"
       />
     </>
   );

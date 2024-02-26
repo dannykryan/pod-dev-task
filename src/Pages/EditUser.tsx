@@ -13,26 +13,18 @@ type User = {
 };
 
 export default function EditUser() {
-
-  const { userId } = useParams();
+  const { userId } = useParams<string>();
   const navigate = useNavigate();
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-
-  // State to store user information
   const [user, setUser] = useState<User | null>(null);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Fetch user information based on userId
+    setLoading(true);
     fetch(`https://dummyjson.com/users/${userId}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch user');
-        }
-        return response.json();
-      })
-      .then((data: User) => {
+      .then(response => response.json())
+      .then(data => {
         setUser(data);
         setLoading(false);
       })
@@ -42,14 +34,6 @@ export default function EditUser() {
         return error;
       });
   }, [userId]);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
 
   function handleUpdateUser() {
     if (user) {
@@ -78,30 +62,36 @@ export default function EditUser() {
     }
   }
 
-  function handleDeleteUser() {
+  const handleDeleteUser = () => {
+    setIsConfirmationModalOpen(true);
+  };
+
+  const confirmedDeleteUser = () => {
     if (user) {
       const deleteUserUrl = `https://dummyjson.com/users/${user.id}`;
-
       fetch(deleteUserUrl, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
-        .then(response => {
-          if (response.ok) {
-            setIsConfirmationModalOpen(true);
-          } else {
-            throw new Error('Failed to delete user');
-          }
-        })
-        .catch(error => {
-          console.error('Failed to delete user:', error);
-        });
+      .then(response => {
+        if (response.ok) {
+          const deletedUserIds = JSON.parse(localStorage.getItem('deletedUserIds') || '[]');
+          deletedUserIds.push(user.id);
+          localStorage.setItem('deletedUserIds', JSON.stringify(deletedUserIds));
+          navigate('/');
+        } else {
+          throw new Error('Failed to delete user');
+        }
+      })
+      .catch(error => console.error('Failed to delete user:', error));
     }
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
-  // Function to handle modal close and navigate back to home
-  function handleCloseAndNavigate() {
-    setIsConfirmationModalOpen(false);
-    navigate('/'); // Navigate to the home page
+  if (error) {
+    return <p>{error}</p>;
   }
 
   return (
@@ -177,28 +167,17 @@ export default function EditUser() {
               </div>
               </form>
             <div className="flex justify-center">
-              <button 
-                type="button"
-                className="btn"
-                onClick={handleUpdateUser}
-              >
-                Update User
-              </button>
-              <button 
-                type="button"
-                className="btn btn-cancel"
-                onClick={handleDeleteUser}
-              >
-                Delete User
-              </button>
+              <button className="btn" onClick={handleUpdateUser}>Update User</button>
+              <button className="btn btn-cancel" onClick={handleDeleteUser}>Delete User</button>
             </div>
           </div>
         )}
       </div>
-      {/* Render ConfirmationModal with onClose modified to handle navigation */}
       <ConfirmationModal 
         isOpen={isConfirmationModalOpen} 
-        onClose={handleCloseAndNavigate}
+        onClose={() => setIsConfirmationModalOpen(false)}
+        onConfirm={confirmedDeleteUser}
+        message="Are you sure you want to delete this user?"
       />
     </div>
   );
