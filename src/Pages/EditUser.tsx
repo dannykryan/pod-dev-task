@@ -19,50 +19,85 @@ export default function EditUser() {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [currentAction, setCurrentAction] = useState('');
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://dummyjson.com/users/${userId}`)
-      .then(response => response.json())
-      .then(data => {
-        setUser(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setError('Failed to fetch user. Please try again later.');
-        setLoading(false);
-        return error;
-      });
+    
+    // Attempt to load updated user data from localStorage first
+    const updatedUsers = JSON.parse(localStorage.getItem('updatedUsers') || '{}');
+    const userFromLocalStorage = updatedUsers[userId!];
+  
+    if (userFromLocalStorage) {
+      setUser(userFromLocalStorage);
+      setLoading(false);
+    } else {
+      // Fallback to fetching user data from the API if not found in localStorage
+      fetch(`https://dummyjson.com/users/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+          setUser(data);
+          setLoading(false);
+        })
+        .catch(error => {
+          setError('Failed to fetch user. Please try again later.');
+          setLoading(false);
+          return console.error(error);
+        });
+    }
   }, [userId]);
+  
+
+
+  // Old function to update user data based on API docs
+
+  // function handleUpdateUser() {
+  //   if (user) {
+  //     const updateUserUrl = `https://dummyjson.com/users/${user.id}`;
+
+  //     // Define the updated user data
+  //     const updatedUserData = {
+  //       firstName: user.firstName,
+  //       lastName: user.lastName,
+  //       email: user.email
+  //     };
+
+  //     fetch(updateUserUrl, {
+  //       method: 'PUT', // or PATCH
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(updatedUserData)
+  //     })
+  //     .then(res => res.json())
+  //     .then(updatedUser => {
+  //       console.log('User updated successfully:', updatedUser);
+  //     })
+  //     .catch(error => {
+  //       console.error('Failed to update user:', error);
+  //     });
+  //     setIsConfirmationModalOpen(true);
+  //   }
+  // }
 
   function handleUpdateUser() {
-    if (user) {
-      const updateUserUrl = `https://dummyjson.com/users/${user.id}`;
-
-      // Define the updated user data
-      const updatedUserData = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
-      };
-
-      fetch(updateUserUrl, {
-        method: 'PUT', // or PATCH
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedUserData)
-      })
-      .then(res => res.json())
-      .then(updatedUser => {
-        console.log('User updated successfully:', updatedUser);
-      })
-      .catch(error => {
-        console.error('Failed to update user:', error);
-      });
-      setIsConfirmationModalOpen(true);
-    }
+    setCurrentAction('update'); // Set the action to 'update'
+    setIsConfirmationModalOpen(true);
   }
 
+  // this function is called when the user confirms the update in the ConfirmationModal
+  const confirmedUpdateUser = () => {
+    if (user) {
+      // Simulate the update by storing the updated user details in localStorage
+      const updatedUsers = JSON.parse(localStorage.getItem('updatedUsers') || '{}');
+      updatedUsers[user.id] = { ...user };
+      localStorage.setItem('updatedUsers', JSON.stringify(updatedUsers));
+  
+      setIsConfirmationModalOpen(false); // Close the confirmation modal
+      navigate('/'); // Adjust the path as needed for your routing
+    }
+  };
+
   const handleDeleteUser = () => {
+    setCurrentAction('delete'); // Set the action to 'delete'
     setIsConfirmationModalOpen(true);
   };
 
@@ -174,10 +209,14 @@ export default function EditUser() {
         )}
       </div>
       <ConfirmationModal 
-        isOpen={isConfirmationModalOpen} 
+        isOpen={isConfirmationModalOpen}
         onClose={() => setIsConfirmationModalOpen(false)}
-        onConfirm={confirmedDeleteUser}
-        message="Are you sure you want to delete this user?"
+        onConfirm={currentAction === 'update' ? confirmedUpdateUser : confirmedDeleteUser}
+        message={
+          currentAction === 'update'
+            ? "Are you sure you want to update this user?"
+            : "Are you sure you want to delete this user?"
+        }
       />
     </div>
   );

@@ -30,21 +30,21 @@ function DashboardPage() {
         return response.json();
       })
       .then(data => {
-        // Retrieve deleted user IDs from localStorage
-      const deletedUserIds = JSON.parse(localStorage.getItem('deletedUserIds') || '[]');
-
-      // Filter out users with IDs in deletedUserIds
-      const updatedUsers = data.users.filter((user: User) => !deletedUserIds.includes(user.id)).map((user: User) => ({
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          age: user.age,
-          image: user.image,
-          gender: user.gender
-        }));
-
-        setUsers(updatedUsers);
+        // Retrieve updated user data and deleted user IDs from localStorage
+        const updatedUserDetails = JSON.parse(localStorage.getItem('updatedUsers') || '{}');
+        const deletedUserIds = JSON.parse(localStorage.getItem('deletedUserIds') || '[]');
+  
+        // Filter out deleted users and apply updates to existing users
+        const processedUsers = data.users.filter((user: User) => !deletedUserIds.includes(user.id))
+          .map((user: User) => {
+            // If there's updated data for this user in localStorage, merge it
+            if (updatedUserDetails[user.id]) {
+              return { ...user, ...updatedUserDetails[user.id] };
+            }
+            return user;
+          });
+  
+        setUsers(processedUsers);
         setLoading(false);
       })
       .catch(error => {
@@ -53,6 +53,7 @@ function DashboardPage() {
         console.error(error);
       });
   }, []);
+  
 
   // Filter users based on search term
   useEffect(() => {
