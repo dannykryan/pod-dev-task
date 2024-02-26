@@ -84,7 +84,7 @@ function DashboardPage() {
   return (
     <div className="flex justify-center text-center mt-[64px] h-screen">
       <div className="p-4">
-        <h1>User Dashboard</h1>
+        <h2>User Dashboard</h2>
         <p className="mb-4">Select a user from the table below to view more details</p>
         <div className="flex justify-center mb-4">
           <input
@@ -108,7 +108,7 @@ function DashboardPage() {
                   <th className="p-2">ID</th>
                   <th className="p-2">Image</th>
                   <th className="p-2">Name</th>
-                  <th className="p-2">Email</th>
+                  <th className="p-2 hide-on-small-screens">Email</th>
                   <th className="p-2">Age</th>
                 </tr>
               </thead>
@@ -116,7 +116,7 @@ function DashboardPage() {
                 {filteredUsers.map((user, index) => (
                   <tr
                     key={user.id}
-                    className={`text-center cursor-pointer ${index % 2 === 0 ? 'bg-gray-100 dark:bg-gray-800' : ''} transition duration-100 hover:bg-yellow-200 dark:hover:bg-yellow-700`}
+                    className={`text-center cursor-pointer ${index % 2 === 0 ? 'bg-gray-100 dark:bg-gray-800' : ''} transition duration-100 hover:bg-yellow-200 dark:hover:bg-[#B58DB6]`}
                     onMouseEnter={playHoverSound}
                     onClick={() => {
                       setSelectedUser(user);
@@ -134,7 +134,7 @@ function DashboardPage() {
                       )}
                     </td>
                     <td className="p-2 border">{user.firstName} {user.lastName}</td>
-                    <td className="p-2 border">{user.email}</td>
+                    <td className="p-2 border hide-on-small-screens">{user.email}</td>
                     <td className="p-2 border">{user.age}</td>
                   </tr>
                 ))}
@@ -145,9 +145,7 @@ function DashboardPage() {
         {/* Conditionally render the UserModal based on isModalOpen state */}
         {isModalOpen && (
         <div className="modal-container fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
             <UserModal user={selectedUser} onClose={() => setIsModalOpen(false)} isOpen={isModalOpen} />
-            </div>
         </div>
         )}
       </div>

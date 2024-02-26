@@ -4,7 +4,7 @@
 
 @layer base {
     .dark body {
-        @apply bg-gray-900; /* Dark mode */
+        @apply bg-gray-900;
     }
 
     h1 {
@@ -19,8 +19,16 @@
         @apply text-blue-700 underline hover:text-purple-500 transition;
     }
 
+    .dark a {
+        @apply text-purple-500 hover:text-blue-700 transition;
+    }
+
     .btn {
         @apply px-4 py-2 bg-custom-blue text-white rounded-md shadow-md no-underline mx-1 hover:transition hover:duration-300 hover:ease-in-out hover:opacity-75;
+    }
+
+    .dark a.btn {
+        @apply no-underline text-white;
     }
 
     a.btn:hover {
@@ -43,3 +51,40 @@
         @apply dark:text-white;
     }
 }
+
+/* Base modal overlay styles */
+.modal-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  
+  /* Base modal styles */
+  .modal {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    /* Ensure the modal is above overlay */
+    z-index: 1050;
+  }
+  
+  /* Responsive adjustments for the modal overlay */
+  @media (max-width: 600px) {
+    .modal-overlay {
+      align-items: flex-start; /* Align to the top */
+      padding-top: 10vh; /* Adds some top padding */
+    }
+  }
+
+  @media (max-width: 599px) {
+    .hide-on-small-screens {
+      display: none;
+    }
+  }

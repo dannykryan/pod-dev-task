@@ -27,8 +27,8 @@ const playDeselectSound = () => {
 const UserModal: React.FC<UserModalProps> = ({ user, onClose, isOpen }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
-  const modalOverlayClass = isOpen ? "fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" : "hidden";
-  const modalClass = isOpen ? "bg-white rounded-lg shadow-lg p-6 dark:bg-gray-800 dark:text-white" : "hidden";
+  const modalOverlayClass = isOpen ? "modal-overlay" : "hidden";
+  const modalClass = isOpen ? "modal dark:bg-slate-800" : "hidden";
 
   if (!user || !isOpen) return null;
 
@@ -71,19 +71,19 @@ const UserModal: React.FC<UserModalProps> = ({ user, onClose, isOpen }) => {
           </div>
         </div>
             <div 
-              className="absolute top-1 right-1 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md cursor-pointer dark:bg-gray-700" 
+              className="absolute top-1 right-1 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md cursor-pointer dark:bg-gray-700 hover:opacity-50" 
               onClick={() => {
                 onClose();
                 playDeselectSound();
               }}
             >
-              <span className="text-black text-2xl dark:text-white" style={{ transform: 'translateY(-2px)' }}>&times;</span>
+              <span className="text-black text-2xl dark:text-white" style={{ transform: 'translateY(-3px)' }}>&times;</span>
             </div>
           </div>
           <div className="px-6 py-4">
             <div className="flex items-center justify-center mb-2">
               <p className="font-bold text-xl">{user.firstName} {user.lastName}</p>
-              <span className={`bg-${user.gender === "male" ? 'blue' : 'pink'}-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs ml-2`}>{user.gender === "male" ? '♂' : '♀'}</span>
+              <span className={`bg-${user.gender === "male" ? 'blue' : 'pink'}-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs ml-2`}>{user.gender === "male" ? <span style={{ transform: 'translateY(-1px)' }}>♂</span> : <span style={{ transform: 'translateY(-1px)' }}>♀</span>}</span>
             </div>
             <a className="dark:text-purple-500" href={`mailto:${user.email}`}>{user.email}</a>
           </div>
