@@ -130,7 +130,7 @@ function DashboardPage() {
                       {user.gender === "male" ? (
                         <span className="absolute top-0 right-0 bg-blue-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs m-1">♂</span>
                       ) : (
-                        <span className="absolute top-0 right-0 bg-pink-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs mt-1">♀</span>
+                        <span className="absolute top-0 right-0 bg-pink-300 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs m-1">♀</span>
                       )}
                     </td>
                     <td className="p-2 border">{user.firstName} {user.lastName}</td>
