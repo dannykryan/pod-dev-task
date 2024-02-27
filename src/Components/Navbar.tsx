@@ -23,7 +23,7 @@ useEffect(() => {
   return (
     <nav className="bg-gray-700 text-white w-full fixed top-0 left-0 px-6 py-4 flex justify-between items-center h-[64px] z-20">
       {/* Empty div to balance the flex space */}
-      <div className="w-[16px]"></div>
+      <div className="w-[48px]"></div>
       <div>
         <Link to="/" className="no-underline">
             <h1 className="text-center flex-grow text-white">Cat Caller</h1>
