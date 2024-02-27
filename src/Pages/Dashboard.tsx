@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import UserModal from '../Components/UserModal';
+import UserModal from '../Components/CatModal';
 
 type User = {
   id: number;
@@ -86,8 +86,8 @@ function DashboardPage() {
   return (
     <div className="flex justify-center text-center mt-[64px] h-screen">
       <div className="p-4">
-        <h2>User Dashboard</h2>
-        <p className="mb-4">Select a user from the table below to view more details</p>
+        <h2>Cat Dashboard</h2>
+        <p className="mb-4">Select a cat from the table below to view more details</p>
         <div className="flex justify-center mb-4">
           <input
             type="text"

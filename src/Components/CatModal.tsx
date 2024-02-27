@@ -83,13 +83,13 @@ const UserModal: React.FC<UserModalProps> = ({ user, onClose, isOpen }) => {
             <a className="dark:text-purple-500" href={`mailto:${user?.email}`}>{user?.email}</a>
           </div>
           <Link to={`/users/${user?.id}/edit`} className="btn py-2 px-4">
-            Update User
+            Update Cat
           </Link>
           <button 
             className="btn btn-cancel py-2 px-4"
             onClick={() => setIsConfirmationModalOpen(true)}
           >
-            Delete User
+            Delete Cat
           </button>
         </div>
       </div>

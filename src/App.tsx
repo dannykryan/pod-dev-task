@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from './Pages/Dashboard';
-import EditUser from './Pages/EditUser';
+import EditUser from './Pages/EditCat';
 import Sidebar from './Components/Sidebar';
 import System from './Pages/System';
 import Navbar from './Components/Navbar';

@@ -202,8 +202,8 @@ export default function EditUser() {
               </div>
               </form>
             <div className="flex justify-center">
-              <button className="btn" onClick={handleUpdateUser}>Update User</button>
-              <button className="btn btn-cancel" onClick={handleDeleteUser}>Delete User</button>
+              <button className="btn" onClick={handleUpdateUser}>Update Cat</button>
+              <button className="btn btn-cancel" onClick={handleDeleteUser}>Delete Cat</button>
             </div>
           </div>
         )}
@@ -214,8 +214,8 @@ export default function EditUser() {
         onConfirm={currentAction === 'update' ? confirmedUpdateUser : confirmedDeleteUser}
         message={
           currentAction === 'update'
-            ? "Are you sure you want to update this user?"
-            : "Are you sure you want to delete this user?"
+            ? "Are you sure you want to update this cat?"
+            : "Are you sure you want to delete this cat?"
         }
       />
     </div>

@@ -26,7 +26,10 @@ useEffect(() => {
       <div className="w-[48px]"></div>
       <div>
         <Link to="/" className="no-underline">
-            <h1 className="text-center flex-grow text-white">Cat Caller</h1>
+            <div>
+                <img src="../../public/Assets/cat-caller-header.svg" alt="cat-caller-header" className="h-[34px]" />
+            </div>
+            <h1 className="text-center flex-grow text-white hidden">Cat Caller</h1>
         </Link>
       </div>
       {/* Button stays to the right */}
