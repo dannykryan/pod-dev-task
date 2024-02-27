@@ -30,7 +30,7 @@ useEffect(() => {
         </Link>
       </div>
       {/* Button stays to the right */}
-      <button onClick={switchMode} className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full">
+      <button onClick={switchMode} className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full transition">
         {darkMode === true ? 
         <img src="../../public/Assets/sun.svg" alt="Home icon" className="w-8 h-8 mx-auto" /> : 
         <img src="../../public/Assets/moon.svg" alt="Home icon" className="w-8 h-8 mx-auto" />}
