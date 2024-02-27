@@ -59,12 +59,12 @@ const UserModal: React.FC<UserModalProps> = ({ user, onClose, isOpen }) => {
         <div className={isOpen ? "modal dark:bg-slate-800" : "hidden"}>
           <div className="relative">
             <div className="flex items-center justify-center">
-              <div className={`w-40 h-40 overflow-hidden ${user?.gender === 'male' ? 'bg-blue-300' : 'bg-pink-300'}`}>
+              <div className={`w-40 h-40 overflow-hidden rounded-md ${user?.gender === 'male' ? 'bg-blue-300' : 'bg-pink-300'}`}>
                 <img className="w-full h-full object-cover" src={user?.image} alt="User" />
               </div>
             </div>
             <div 
-              className="absolute top-1 right-1 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md cursor-pointer dark:bg-gray-700 hover:opacity-50" 
+              className="absolute -top-0.5 -right-1 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md cursor-pointer dark:bg-gray-700 hover:opacity-50" 
               onClick={() => {
                 onClose();
                 playDeselectSound();

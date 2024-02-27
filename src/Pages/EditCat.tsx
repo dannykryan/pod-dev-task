@@ -47,37 +47,6 @@ export default function EditUser() {
     }
   }, [userId]);
   
-
-
-  // Old function to update user data based on API docs
-
-  // function handleUpdateUser() {
-  //   if (user) {
-  //     const updateUserUrl = `https://dummyjson.com/users/${user.id}`;
-
-  //     // Define the updated user data
-  //     const updatedUserData = {
-  //       firstName: user.firstName,
-  //       lastName: user.lastName,
-  //       email: user.email
-  //     };
-
-  //     fetch(updateUserUrl, {
-  //       method: 'PUT', // or PATCH
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(updatedUserData)
-  //     })
-  //     .then(res => res.json())
-  //     .then(updatedUser => {
-  //       console.log('User updated successfully:', updatedUser);
-  //     })
-  //     .catch(error => {
-  //       console.error('Failed to update user:', error);
-  //     });
-  //     setIsConfirmationModalOpen(true);
-  //   }
-  // }
-
   function handleUpdateUser() {
     setCurrentAction('update'); // Set the action to 'update'
     setIsConfirmationModalOpen(true);
