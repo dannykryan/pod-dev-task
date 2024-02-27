@@ -8,6 +8,14 @@ const Sidebar = () => {
     setIsOpen(!isOpen);
   };
 
+  const clearLocalStorage = () => {
+    // Clear all local storage data
+    localStorage.clear();
+    // Add any other actions you'd like to perform after clearing local storage
+    alert('Local storage cleared!');
+    window.location.reload();
+  };
+
   return (
     <div className="fixed z-50">
       {/* Toggle button */}
@@ -43,6 +51,14 @@ const Sidebar = () => {
             </button>
           </div>
         </div>
+        <div className="mt-auto">
+            <button
+              onClick={clearLocalStorage}
+              className="text-2xl text-white hover:text-gray-300 focus:outline-none"
+            >
+              <img src="../../public/Assets/refresh.svg" alt="Home icon" className="w-8 h-8 mx-auto" />
+            </button>
+          </div>
       </div>
     </div>
   );
