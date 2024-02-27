@@ -56,7 +56,7 @@ const Sidebar = () => {
               onClick={clearLocalStorage}
               className="text-2xl text-white hover:text-gray-300 focus:outline-none"
             >
-              <img src="../../public/Assets/refresh.svg" alt="Home icon" className="w-8 h-8 mx-auto" />
+              <img src="../../public/Assets/refresh.svg" alt="Home icon" className="w-10 h-10 mx-auto" />
             </button>
           </div>
       </div>
