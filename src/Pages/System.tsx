@@ -1,7 +1,7 @@
 export default function DesignSystem() {
     return (
         <>
-        <div className="px-20 py-10">
+        <div className="px-20 py-10 pt-[64px]">
             <div>
                 <h1>This is a title</h1>
                 <h2>This is a subtitle</h2>
